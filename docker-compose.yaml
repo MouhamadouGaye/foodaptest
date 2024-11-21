@@ -17,7 +17,7 @@
 #       - db
 
 #   db:
-#     image: postgres:13
+#     image: postgres:14
 #     container_name: postgres_db
 #     environment:
 #       POSTGRES_USER: postgres
@@ -26,23 +26,3 @@
 #     ports:
 #       - "5433:5433"
 
-# Dockerfile (no extension)
-
-# # Use a lightweight Python image
-# FROM python:3.9-slim
-
-# # Set the working directory in the container
-# WORKDIR /app
-
-# # Copy the requirements and install dependencies
-# COPY requirements.txt .
-# RUN pip install --no-cache-dir -r requirements.txt
-
-# # Copy the application code into the container
-# COPY . .
-
-# # Expose the port FastAPI will use
-# EXPOSE 8000
-
-# # Start the FastAPI application
-# CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
