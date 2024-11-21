@@ -1,0 +1,168 @@
+{% extends "layout.html"%}{%block content%} {% block title%} Styles component
+{%endblock%}
+<div class="bg-gray-150">
+  <div
+    class="grid grid-cols-1 justify-center sm:grid-cols-2 md:grid-cols-3 gap-6 m-8"
+  >
+    {% for i in range(12) %}
+    <div
+      class="group bg-white p-6 rounded-lg shadow hover:shadow-xl transition ease-in-out duration-300 hover:scale-105"
+    >
+      <h2 class="text-xl font-semibold text-indigo-700 group-hover:text-black">
+        Post Title {{ i+1 }}
+      </h2>
+      <p class="text-sm text-gray-500 mb-4">
+        This is a placeholder subtitle for post {{ i+1 }}
+      </p>
+      <p class="text-xs text-gray-400">Placeholder Date</p>
+    </div>
+    {% endfor %}
+  </div>
+  <!-- Pricing Section -->
+  <!-- <div class="container mx-auto py-10 px-4"> -->
+  <!-- <div class="flex flex-wrap justify-center gap-8">
+
+      <div class="w-full lg:w-1/2 bg-white rounded-lg shadow-lg p-8">
+        <h2 class="text-lg font-semibold text-gray-700 mb-4">Marketing</h2>
+        <p class="text-3xl font-bold text-gray-900 mb-2">
+          129 €
+          <span class="text-sm font-light text-gray-500">plus local taxes</span>
+        </p>
+        <p class="text-gray-500 mb-4">
+          Heroes, feature sections, newsletter sign-up forms — all the
+          components you need to build beautiful marketing websites.
+        </p>
+        <button
+          class="mt-4 bg-gray-200 text-gray-700 px-6 py-2 rounded-lg font-semibold hover:bg-gray-300"
+        >
+          Get package
+        </button>
+      </div>
+
+ 
+      <div class="w-full lg:w-1/2 bg-white rounded-lg shadow-lg p-8">
+        <h2 class="text-lg font-semibold text-gray-700 mb-4">Application UI</h2>
+        <p class="text-3xl font-bold text-gray-900 mb-2">
+          129 €
+          <span class="text-sm font-light text-gray-500">plus local taxes</span>
+        </p>
+        <p class="text-gray-500 mb-4">
+          Form layouts, tables, dialogs — all the components you need to build
+          beautiful responsive web applications.
+        </p>
+        <button
+          class="mt-4 bg-gray-200 text-gray-700 px-6 py-2 rounded-lg font-semibold hover:bg-gray-300"
+        >
+          Get package
+        </button>
+      </div>
+
+   
+      <div class="w-full lg:w-1/2 bg-white rounded-lg shadow-lg p-8">
+        <h2 class="text-lg font-semibold text-gray-700 mb-4">Ecommerce</h2>
+        <p class="text-3xl font-bold text-gray-900 mb-2">
+          129 €
+          <span class="text-sm font-light text-gray-500">plus local taxes</span>
+        </p>
+        <p class="text-gray-500 mb-4">
+          Checkout forms, shopping carts, product views — all the components you
+          need to build your next ecommerce front-end.
+        </p>
+        <button
+          class="mt-4 bg-gray-200 text-gray-700 px-6 py-2 rounded-lg font-semibold hover:bg-gray-300"
+        >
+          Get package
+        </button>
+      </div>
+
+ 
+      <div class="w-full lg:w-1/2 bg-blue-50 rounded-lg shadow-lg p-8">
+        <h2 class="text-lg font-semibold text-blue-600 mb-4">
+          Get with all-access
+        </h2>
+        <p class="text-4xl font-bold text-gray-900 mb-2">
+          249 €
+          <span class="text-sm font-light text-gray-500"
+            >one-time payment plus local taxes</span
+          >
+        </p>
+        <p class="text-gray-500 mb-4">
+          Get lifetime access to all of the application UI, marketing, and
+          ecommerce components, plus our site templates for a single one-time
+          purchase.
+        </p>
+        <ul class="mb-4 space-y-2 text-gray-600">
+          <li class="flex items-center">
+            <svg
+              class="h-5 w-5 text-blue-600 mr-2"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zm-1.707-5.707l-3-3a1 1 0 011.414-1.414L9 9.586l4.293-4.293a1 1 0 111.414 1.414l-5 5a1 1 0 01-1.414 0z"
+                clip-rule="evenodd"
+              />
+            </svg>
+            Over 500+ components — everything you need to build beautiful UIs.
+          </li>
+          <li class="flex items-center">
+            <svg
+              class="h-5 w-5 text-blue-600 mr-2"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zm-1.707-5.707l-3-3a1 1 0 011.414-1.414L9 9.586l4.293-4.293a1 1 0 111.414 1.414l-5 5a1 1 0 01-1.414 0z"
+                clip-rule="evenodd"
+              />
+            </svg>
+            Every site template — beautifully designed and crafted with modern
+            technologies.
+          </li>
+          <li class="flex items-center">
+            <svg
+              class="h-5 w-5 text-blue-600 mr-2"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zm-1.707-5.707l-3-3a1 1 0 011.414-1.414L9 9.586l4.293-4.293a1 1 0 111.414 1.414l-5 5a1 1 0 01-1.414 0z"
+                clip-rule="evenodd"
+              />
+            </svg>
+            Lifetime access — instant access to everything we have today and in
+            the future.
+          </li>
+          <li class="flex items-center">
+            <svg
+              class="h-5 w-5 text-blue-600 mr-2"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zm-1.707-5.707l-3-3a1 1 0 011.4141.414L9 9.586l4.293-4.293a1 1 0 111.414 1.414l-5 5a1 1 0 01-1.414 0z"
+                clip-rule="evenodd"
+              />
+            </svg>
+            Available for teams — get access to all components and templates,
+            plus future updates for your team.
+          </li>
+        </ul>
+        <button
+          class="mt-6 bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700"
+        >
+          Get all-access
+        </button>
+      </div>
+    </div> -->
+  <!-- </div> -->
+</div>
+{%endblock%}

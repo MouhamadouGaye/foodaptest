@@ -1,0 +1,23 @@
+fastapi                # A modern web framework for building APIs with Python, using type hints for validation and auto documentation.
+uvicorn                # A high-performance ASGI(Asynchronous Server Gateway Interface.) server for running FastAPI and other async frameworks.
+sqlalchemy             # A popular SQL toolkit(boîte à outils) and ORM library for managing database interactions in Python applications.
+psycopg2-binary        # A PostgreSQL database adapter for Python, allowing efficient access to PostgreSQL databases.
+passlib                # A password hashing library used for secure password storage and verification.
+python-jose            # A library for handling JSON Web Tokens (JWT) and JOSE (JSON Object Signing and Encryption) in Python.
+jinja2                 # A templating engine for Python, used to generate HTML or other markup by combining templates with data.
+itsdangerous           # Provides cryptographic signing to ensure data integrity, preventing tampering of data like cookies or tokens.
+python-multipart       # A library for parsing multipart/form-data, used in file uploads and form submissions in web apps.
+aiofiles               # A library for asynchronous file operations, making it efficient to handle file I/O in async Python code.
+email-validator        # A library that validates and normalizes email addresses, ensuring proper formatting and domain existence.
+httpx                  # An async HTTP client for making web requests, supporting both synchronous and asynchronous operations.
+bcrypt                 # A library for hashing and verifying passwords securely using the bcrypt algorithm.
+python-dotenv          # A library for loading environment variables from a `.env` file into Python applications.
+starlette              # A lightweight ASGI framework used as a toolkit for building async web services, underlying FastAPI.
+fastapi-session        # A session management library for FastAPI, managing stateful sessions for user authentication.
+python-oauthlib        # A Python library for implementing OAuth2, allowing secure API authorization for third-party applications.
+requests-oauthlib      # An OAuth extension for the `requests` library, simplifying OAuth client authentication workflows.
+
+
+
+
+

@@ -1,0 +1,289 @@
+{% extends "layout.html" %} {% block content %}
+<div class="container mx-auto px-4 py-8">
+  <!-- Success Message -->
+  {% if request.query_params.success == 'true' %}
+  <div
+    id="success-message"
+    class="bg-green-100 text-green-800 p-4 mb-6 rounded-lg"
+  >
+    Post updated successfully!
+  </div>
+  {% endif %}
+  <!-- Success Message -->
+  <h1 class="text-2xl">Welcome to Your Dashboard, {{ username }}</h1>
+  <div class="flex items-center items-center gap-4">
+    <div class="mt-2 mb-2">
+      <a
+        href="/create_post"
+        class="mt-4 bg-green-400 text-white p-1 px-2 rounded"
+        >+ Create Post</a
+      >
+    </div>
+
+    <div class="mt-2 mb-2" id="apiview">
+      <a id="textapi" class=" bg-indigo-400 text-white p-1 px-2 rounded">
+        Have Your Api
+      </a>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+    <!-- Small Chart 1: Number of Posts Over Time -->
+    <div class="bg-white shadow rounded-lg p-4">
+      <h3 class="text-lg font-semibold text-gray-800 mb-2">Posts Over Time</h3>
+      <canvas id="postsOverTimeChart"></canvas>
+    </div>
+
+    <!-- Small Chart 2: Post Lengths -->
+    <div class="bg-white shadow rounded-lg p-4">
+      <h3 class="text-lg font-semibold text-gray-800 mb-2">Post Lengths</h3>
+      <canvas id="postLengthsChart"></canvas>
+    </div>
+
+    <!-- Small Chart 3: Posts Per Day -->
+    <div class="bg-white shadow rounded-lg p-4">
+      <h3 class="text-lg font-semibold text-gray-800 mb-2">Posts Per Day</h3>
+      <canvas id="postsPerDayChart"></canvas>
+    </div>
+
+    <!-- Small Chart 4: Custom Metric -->
+    <div class="bg-white shadow rounded-lg p-4">
+      <h3 class="text-lg font-semibold text-gray-800 mb-2">Custom Metric</h3>
+      <canvas id="customMetricChart"></canvas>
+    </div>
+  </div>
+
+
+  <div id="posts" class="bg-white shadow rounded-lg p-6">
+    <h2 class="text-xl font-semibold text-gray-800 mb-4">Your Posts</h2>
+ <!--5 Buttons filter for posts there were ( posts < 3 days, posts < 7 days,posts < 14 days, posts < 1 months ) ? -->
+  <!-- Filter buttons -->
+  <div class="flex space-x-2 mb-4">
+    <a href="?filter=3" class="bg-indigo-200 text-indigo-600 border-indigo-600 border px-4 py-2 rounded hover:bg-indigo-600 hover:text-white">
+        3 Days
+    </a>
+    <a href="?filter=7" class="bg-indigo-200 text-indigo-600 border-indigo-600 border px-4 py-2 rounded hover:bg-indigo-600 hover:text-white">
+        7 Days
+    </a>
+    <a href="?filter=14" class="bg-indigo-200 text-indigo-600 border-indigo-600 border px-4 py-2 rounded hover:bg-indigo-600 hover:text-white">
+        14 Days
+    </a>
+    <a href="?filter=30" class="bg-indigo-200 text-indigo-600 border-indigo-600 border px-4 py-2 rounded hover:bg-indigo-600 hover:text-white">
+        1 Month
+    </a>
+</div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      {% for post in posts %}
+      <div class="bg-gray-100 p-4 rounded-lg shadow" id="post-{{ post.id }}">
+        <div class="flex items-center justify-between">
+        <div>
+          <h3 class="text-lg font-semibold text-indigo-600">{{ post.title }}</h3>
+          <p class="text-sm text-gray-600">{{ post.subtitle }}</p>
+          <p class="text-xs text-gray-500">
+              Created on: {{ post.created_at.strftime('%Y-%m-%d') }}
+          </p>
+        </div>
+        <div class="max-w-md h-20">
+        {% if post.media_url %} 
+          {% if post.media_url.endswith(".mp4") %}
+          <video controls class="w-[200px] h-20 object-cover">
+            <source src="{{ post.media_url }}" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+            {% elif post.media_url.endswith(".avi") %}
+          <video controls class="w-[200px] h-20 object-cover">
+            <source src="{{ post.media_url }}" type="video/avi" />
+            Your browser does not support the video tag.
+          </video>
+            {% elif post.media_url.endswith(".mov") %}
+ 
+          <video controls class="w-[200px] h-20 object-cover">
+            <source src="{{ post.media_url }}" type="video/quicktime" />
+            Your browser does not support the video tag.
+          </video>
+            {% else %} 
+          <img
+            src="{{ post.media_url }}"
+            alt="{{ post.title }}"
+            class="rounded-lg w-[200px] h-20 object-cover"
+          />
+          {% endif %} {% endif %}
+        </div>
+      </div>
+        <!-- Post action buttons -->
+        <div class="mt-4 flex justify-between">
+          <a href="/posts/{{ post.id }}" class="text-indigo-600 hover:underline"
+            >View</a
+          >
+          <a
+            href="/posts/{{ post.id }}/edit"
+            class="text-yellow-600 hover:underline"
+            >Edit</a
+          >
+          <a
+            href="/posts/{{ post.id }}/delete"
+            class="text-red-600 hover:underline"
+            >Delete</a
+          >
+        </div>
+      </div>
+      {% else %}
+      <p class="text-gray-600">You have no posts yet.</p>
+    {% endfor %}
+    </div>
+  
+
+  </div>
+</div>
+
+  <!-- Include Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Script to render the charts -->
+
+  <script>
+    // Data passed from FastAPI backend but not works without the parsing
+    // const postCountByDate = {{ post_count_by_date|tojson }};
+    // const postLengths = {{ post_lengths|tojson }};
+
+    // I need to to Parse JSON data passed from FastAPI backend to make it work
+    const postCountByDate = JSON.parse('{{ post_count_by_date | safe }}');
+    const postLengths = JSON.parse('{{ post_lengths | safe }}');
+
+    console.log(postCountByDate, postLengths)
+
+    console.log("Post Count By Date:", postCountByDate);
+    console.log("Post Lengths:", postLengths);
+
+    // Chart 1: Posts Over Time
+    const postsOverTimeCtx = document.getElementById('postsOverTimeChart').getContext('2d');
+    const postsOverTimeChart = new Chart(postsOverTimeCtx, {
+        type: 'line',
+        data: {
+            labels: Object.keys(postCountByDate),
+            datasets: [{
+                label: 'Number of Posts',
+                data: Object.values(postCountByDate),
+                borderColor: 'rgba(75, 192, 192, 1)',
+                fill: false
+            }]
+        }
+    });
+
+    // Chart 2: Post Lengths
+    if (!Array.isArray(postLengths)) {
+      console.error("postLengths is not an array:", postLengths);
+    } else{
+      const postLengthsCtx = document.getElementById('postLengthsChart').getContext('2d');
+      const postLengthsChart = new Chart(postLengthsCtx, {
+          type: 'bar',
+          data: {
+              labels: postLengths.map((_, i) => `Post ${i + 1}`),
+              datasets: [{
+                label: 'Post Length (characters)',
+                data: postLengths,
+                backgroundColor: 'rgba(153, 102, 255, 0.6)'
+               }]
+              }
+          });
+    }
+    // Ensure this chart has valid data
+    console.log("Post Lengths Chart Data:", postLengths);
+
+    // Chart 3: Posts Per Day
+    if (!Array.isArray(postLengths)) {
+      console.error("postLengths is not an array:", postLengths);
+    } else {
+    const postsPerDayCtx = document.getElementById('postsPerDayChart').getContext('2d');
+    const postsPerDayChart = new Chart(postsPerDayCtx, {
+        type: 'pie',
+        data: {
+            labels: Object.keys(postCountByDate),
+            datasets: [{
+                label: 'Posts Per Day',
+                data: Object.values(postCountByDate),
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.6)',
+                    'rgba(54, 162, 235, 0.6)',
+                    'rgba(255, 206, 86, 0.6)'
+                ]
+              }]
+            }
+
+        });
+      }
+    // Chart 4: Custom Metric (e.g., Average Posts)
+
+    const customMetricCtx = document.getElementById('customMetricChart').getContext('2d');
+    const customMetricChart = new Chart(customMetricCtx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Metric 1', 'Metric 2'],
+            datasets: [{
+                label: 'Custom Metric',
+                data: [10, 20], // Placeholder data
+                backgroundColor: [
+                    'rgba(255, 159, 64, 0.6)',
+                    'rgba(75, 192, 192, 0.6)'
+                ]
+            }]
+        }
+    });
+  </script>
+  <!--START Highlight and Success Message Script -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const urlParams = new URLSearchParams(window.location.search);
+      const success = urlParams.get("success");
+      const highlightedPostId = urlParams.get("highlighted");
+
+      if (success === "true") {
+        // Remove the success message after 3 seconds
+        setTimeout(() => {
+          const successMessage = document.getElementById("success-message");
+          if (successMessage) {
+            successMessage.style.display = "none";
+          }
+        }, 3000);
+      }
+
+      if (highlightedPostId) {
+        // Highlight the updated post for 3 seconds
+        const postElement = document.getElementById(
+          `post-${highlightedPostId}`
+        );
+        if (postElement) {
+          postElement.classList.add(
+            "bg-gray-100",
+            "border",
+            "border-yellow-500"
+          );
+          setTimeout(() => {
+            postElement.classList.remove(
+              "bg-yellow-100",
+              "border",
+              "border-yellow-500"
+            );
+          }, 6000);
+        }
+      }
+    });
+
+    
+  </script>
+  <!-- END Highlight and Success Message Script -->
+  <script>
+    const api = document.getElementById("apiview");
+    const text = document.getElementById("textapi");
+
+    api.addEventListener("click", () => {
+      // Change the text content
+      text.innerHTML = "/api/users/Your-ID/posts";
+
+      // Toggle Tailwind classes
+      text.classList.toggle("mr-4 bg-green-400 text-white p-1 px-2 rounded"); // Toggle off gray text
+      text.classList.toggle("mr-4 bg-white text-blue-600 p-1 px-1 rounded"); // Toggle on blue text
+    });
+  </script>
+  {% endblock %}
+</div>
