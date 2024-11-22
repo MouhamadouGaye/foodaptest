@@ -13,7 +13,6 @@ httpx                  # An async HTTP client for making web requests, supportin
 bcrypt                 # A library for hashing and verifying passwords securely using the bcrypt algorithm.
 python-dotenv          # A library for loading environment variables from a `.env` file into Python applications.
 starlette              # A lightweight ASGI framework used as a toolkit for building async web services, underlying FastAPI.
-fastapi-session        # A session management library for FastAPI, managing stateful sessions for user authentication.
 python-oauthlib        # A Python library for implementing OAuth2, allowing secure API authorization for third-party applications.
 requests-oauthlib      # An OAuth extension for the `requests` library, simplifying OAuth client authentication workflows.
 
